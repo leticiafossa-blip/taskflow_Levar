@@ -3,13 +3,13 @@ import { getAuth, GithubAuthProvider, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+  apiKey: "AIzaSyDcdsntC0dmGRU2FuNic9f1M0uEXvWyVGs",
+  authDomain: "aula1505-f9b65.firebaseapp.com",
+  projectId: "aula1505-f9b65",
+  storageBucket: "aula1505-f9b65.firebasestorage.app",
+  messagingSenderId: "112330721527",
+  appId: "1:112330721527:web:9c6ffd8a70bf12832fabf2",
+  measurementId: "G-9764VW8STR"
 };
 
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
