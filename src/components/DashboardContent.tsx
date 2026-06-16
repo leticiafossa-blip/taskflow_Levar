@@ -1,48 +1,220 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { useAuth } from '../hooks/useAuth';
-import Link from 'next/link';
+import {
+  ShieldCheck,
+  UserRoundCheck,
+  MailCheck,
+  Trash2,
+  RefreshCcw,
+} from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
+import {
+  deleteCurrentUserAccount,
+  sendVerificationAgain,
+  signOutUser,
+} from "@/services/auth.service";
 
-export default function DashboardContent() {
-  const { user, logout } = useAuth();
+export function DashboardContent() {
+  const { user } = useAuth();
+  const router = useRouter();
+
+  const [deleting, setDeleting] = useState(false);
+  const [sendingEmail, setSendingEmail] = useState(false);
+
+  async function handleSendVerification() {
+    if (!user) {
+      toast.error("Usuário não encontrado. Faça login novamente.");
+      return;
+    }
+
+    if (user.emailVerified) {
+      toast.info("Seu e-mail já está verificado.");
+      return;
+    }
+
+    try {
+      setSendingEmail(true);
+
+      await sendVerificationAgain(user);
+
+      toast.success("E-mail de verificação enviado com sucesso!", {
+        description: "Verifique sua caixa de entrada e também o spam.",
+      });
+    } catch (error: any) {
+      const errorCode = error?.code;
+
+      if (errorCode === "auth/too-many-requests") {
+        toast.error("Muitas tentativas de envio.", {
+          description: "Aguarde alguns minutos antes de tentar novamente.",
+        });
+        return;
+      }
+
+      if (errorCode === "auth/user-token-expired") {
+        toast.error("Sua sessão expirou.", {
+          description: "Saia da conta e entre novamente.",
+        });
+        return;
+      }
+
+      toast.error("Não foi possível enviar o e-mail de verificação.", {
+        description: "Tente sair da conta, entrar novamente e reenviar.",
+      });
+    } finally {
+      setSendingEmail(false);
+    }
+  }
+
+  async function handleDeleteAccount() {
+    if (!user) {
+      toast.error("Usuário não encontrado. Faça login novamente.");
+      return;
+    }
+
+    const confirmed = window.confirm(
+      "Tem certeza que deseja excluir sua conta? Essa ação não poderá ser desfeita."
+    );
+
+    if (!confirmed) return;
+
+    try {
+      setDeleting(true);
+
+      await deleteCurrentUserAccount(user);
+
+      toast.success("Conta excluída com sucesso.");
+      router.push("/");
+    } catch (error: any) {
+      const errorCode = error?.code;
+
+      if (errorCode === "auth/requires-recent-login") {
+        toast.error("Por segurança, faça login novamente.", {
+          description:
+            "Saia da conta, entre novamente e tente excluir a conta outra vez.",
+        });
+        return;
+      }
+
+      toast.error("Não foi possível excluir a conta.", {
+        description: "Tente sair e entrar novamente antes de excluir.",
+      });
+    } finally {
+      setDeleting(false);
+    }
+  }
+
+  async function handleLogout() {
+    await signOutUser();
+    toast.success("Você saiu da conta.");
+    router.push("/");
+  }
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      {/* Cabeçalho do Dashboard */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 bg-white p-6 rounded-xl shadow-sm border border-gray-100 gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-800">
-            Olá, {user?.displayName || user?.email || 'Usuário'}! 👋
-          </h1>
-          <p className="text-gray-500 text-sm mt-1">
-            Bem-vindo ao seu painel do TaskFlow.
-          </p>
-        </div>
-        
-        <div className="flex gap-3">
-          {/* BOTÃO PARA IR PARA AS TAREFAS */}
-          <Link 
-            href="/tasks" 
-            className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-medium shadow-sm transition-colors flex items-center gap-2"
-          >
-            📋 Gerenciar Tarefas
-          </Link>
-          
-          <button
-            onClick={logout}
-            className="border border-red-200 text-red-600 hover:bg-red-50 px-5 py-2.5 rounded-lg font-medium transition-colors"
-          >
-            Sair da Conta
-          </button>
-        </div>
+    <section className="mx-auto min-h-[calc(100vh-160px)] max-w-7xl px-6 py-10">
+      <div className="rounded-3xl bg-gradient-to-r from-blue-700 to-slate-950 p-8 text-white shadow-xl">
+        <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-semibold">
+          <ShieldCheck size={18} />
+          Área segura
+        </span>
+
+        <h1 className="mt-5 text-4xl font-bold">
+          Bem-vindo ao Dashboard TaskFlow
+        </h1>
+
+        <p className="mt-3 max-w-2xl text-blue-100">
+          Esta área é exclusiva para usuários autenticados. Aqui você pode
+          visualizar seus dados de acesso, acompanhar o status da conta e
+          gerenciar sua autenticação.
+        </p>
       </div>
 
-      {/* Espaço reservado para as métricas e gráficos do Tremor (Entrega Final) */}
-      <div className="bg-gray-50 border border-dashed border-gray-300 rounded-xl p-12 text-center">
-        <p className="text-gray-500 font-medium">Os gráficos e métricas do Tremor serão injetados aqui na próxima etapa.</p>
-        <p className="text-gray-400 text-sm mt-1">O motor do CRUD de tarefas já está isolado e pronto na página de gerenciamento.</p>
+      <div className="mt-8 grid gap-6 lg:grid-cols-3">
+        <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <UserRoundCheck className="text-blue-600" />
+
+          <h2 className="mt-4 text-xl font-bold text-slate-950">
+            Usuário autenticado
+          </h2>
+
+          <p className="mt-2 text-slate-600">
+            Nome: <strong>{user?.displayName || "Não informado"}</strong>
+          </p>
+
+          <p className="mt-1 break-all text-slate-600">
+            E-mail: <strong>{user?.email}</strong>
+          </p>
+
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="mt-5 rounded-xl bg-slate-900 px-5 py-3 font-semibold text-white transition hover:bg-slate-700"
+          >
+            Sair da conta
+          </button>
+        </article>
+
+        <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <MailCheck
+            className={user?.emailVerified ? "text-green-600" : "text-amber-600"}
+          />
+
+          <h2 className="mt-4 text-xl font-bold text-slate-950">
+            Verificação de e-mail
+          </h2>
+
+          <p className="mt-2 text-slate-600">
+            Status:{" "}
+            <strong>
+              {user?.emailVerified
+                ? "E-mail verificado"
+                : "E-mail ainda não verificado"}
+            </strong>
+          </p>
+
+          {!user?.emailVerified && (
+            <button
+              type="button"
+              onClick={handleSendVerification}
+              disabled={sendingEmail}
+              className="mt-4 inline-flex items-center gap-2 rounded-xl border border-blue-600 px-4 py-2 font-semibold text-blue-700 transition hover:bg-blue-50 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <RefreshCcw size={16} />
+              {sendingEmail ? "Enviando..." : "Reenviar verificação"}
+            </button>
+          )}
+
+          {user?.emailVerified && (
+            <p className="mt-4 rounded-xl bg-green-50 px-4 py-3 text-sm font-medium text-green-700">
+              Sua conta já está com o e-mail verificado.
+            </p>
+          )}
+        </article>
+
+        <article className="rounded-2xl border border-red-200 bg-red-50 p-6 shadow-sm">
+          <Trash2 className="text-red-600" />
+
+          <h2 className="mt-4 text-xl font-bold text-red-950">
+            Excluir conta
+          </h2>
+
+          <p className="mt-2 text-red-800">
+            Ao excluir sua conta, o acesso ao sistema será removido de forma
+            permanente.
+          </p>
+
+          <button
+            type="button"
+            onClick={handleDeleteAccount}
+            disabled={deleting}
+            className="mt-4 rounded-xl bg-red-600 px-4 py-2 font-semibold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {deleting ? "Excluindo..." : "Excluir minha conta"}
+          </button>
+        </article>
       </div>
-    </div>
+    </section>
   );
 }
