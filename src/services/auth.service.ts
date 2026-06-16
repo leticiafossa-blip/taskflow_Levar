@@ -6,7 +6,15 @@ export type RegisterUserData = { name: string; email: string; password: string; 
 export async function registerUser({ name, email, password }: RegisterUserData) {
   const credential = await createUserWithEmailAndPassword(auth, email, password);
   await updateProfile(credential.user, { displayName: name });
-  await sendEmailVerification(credential.user);
+  
+  try {
+    // Tenta enviar o email de verificação
+    await sendEmailVerification(credential.user);
+  } catch (error: any) {
+    // Se falhar (ex: bloqueio por spam do Firebase), loga o erro mas NÃO trava o cadastro do usuário
+    console.warn("Aviso: Conta criada, mas falha ao enviar email de verificação.", error.message);
+  }
+  
   return credential.user;
 }
 
