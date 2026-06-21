@@ -3,6 +3,35 @@
 @tailwind utilities;
 
 html { scroll-behavior: smooth; }
-body { min-height: 100vh; background: #f8fafc; color: #0f172a; }
+body { 
+  min-height: 100vh; 
+  @apply bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-50 transition-colors duration-300;
+}
 * { box-sizing: border-box; }
 button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid #2563eb; outline-offset: 3px; }
+@layer base {
+  .dark .fc {
+    --fc-page-bg-color: #0f172a; 
+    --fc-neutral-bg-color: #1e293b;
+    --fc-border-color: #334155;
+    background-color: #0f172a !important;
+    color: #f8fafc !important;
+  }
+
+  /* Força o fundo das células e da grade do calendário */
+  .dark .fc .fc-view-harness,
+  .dark .fc .fc-daygrid-body,
+  .dark .fc .fc-scrollgrid,
+  .dark .fc-theme-standard td, 
+  .dark .fc-theme-standard th {
+    background-color: #0f172a !important;
+    border-color: #334155 !important;
+  }
+
+  /* Ajusta a cor dos textos de data e título */
+  .dark .fc .fc-toolbar-title,
+  .dark .fc .fc-col-header-cell-cushion,
+  .dark .fc .fc-daygrid-day-number {
+    color: #f8fafc !important;
+  }
+}

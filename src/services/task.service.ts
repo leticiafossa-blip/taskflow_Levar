@@ -8,8 +8,10 @@ import {
   deleteDoc, 
   query, 
   where,
-  Timestamp 
+  Timestamp,
+  getDoc
 } from 'firebase/firestore';
+
 import { Task } from '../types/task';
 
 const COLLECTION_NAME = 'tasks';
@@ -47,5 +49,20 @@ export const taskService = {
   async deleteTask(id: string) {
     const docRef = doc(db, COLLECTION_NAME, id);
     await deleteDoc(docRef);
+  },
+
+  async getTaskById (id: string) {
+    try {
+      const docRef = doc(db, "tasks", id);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        return { id: docSnap.id, ...docSnap.data() } as Task;
+      }
+      return null;
+    } catch (error) {
+      console.error("Erro ao buscar a tarefa:", error);
+      throw error;
+    }
   }
 };

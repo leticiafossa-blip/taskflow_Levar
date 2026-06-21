@@ -8,6 +8,7 @@ import { Task } from '@/types/task';
 import TaskCard from '@/components/TaskCard';
 import TaskForm from '@/components/TaskForm';
 import Link from 'next/link'; // <-- Adicionamos a importação do Link
+import { TaskMetrics } from '@/components/TaskMetrics';
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -70,8 +71,8 @@ export default function DashboardPage() {
         {/* Cabeçalho atualizado com os dois botões */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 border-b pb-4 gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-800">Dashboard de Tarefas</h1>
-            <p className="text-gray-500 mt-1">Gerencie suas atividades e acompanhe seu progresso.</p>
+            <h1 className="text-3xl font-bold text-slate-950 dark:text-white">Dashboard de Tarefas</h1>
+            <p className="mt-2 text-slate-600 dark:text-slate-400">Gerencie suas atividades e acompanhe seu progresso.</p>
           </div>
           <div className="flex gap-3 w-full md:w-auto">
             {/* NOVO BOTÃO DE VOLTAR PARA O PERFIL */}
@@ -90,6 +91,9 @@ export default function DashboardPage() {
             </button>
           </div>
         </div>
+        {!loading && tasks.length > 0 && (
+          <TaskMetrics tasks={tasks} />
+        )}
 
         {isFormOpen && (
           <div className="mb-8">
