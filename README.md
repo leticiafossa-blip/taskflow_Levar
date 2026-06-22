@@ -1,70 +1,51 @@
-# TaskFlow — Entrega Parcial 1
+# 🚀 TaskFlow - Gestor de Tarefas
 
-Projeto acadêmico desenvolvido para a disciplina de Desenvolvimento Web.
+O **TaskFlow** é uma aplicação completa de gerenciamento de tarefas desenvolvida para ajudar os usuários a organizarem suas rotinas diárias. Construída com um ecossistema moderno, a aplicação conta com Dashboard de métricas, Quadro Kanban e Calendário de prazos, além de garantir suporte a acessibilidade (VLibras) e Dark Mode nativo.
 
-Esta entrega parcial contempla o **sistema de login completo** do projeto TaskFlow, utilizando **Next.js**, **TypeScript**, **Tailwind CSS** e **Firebase Authentication**.
+## 🛠️ Stack Tecnológico
 
-## Funcionalidades da Entrega Parcial 1
+* **Framework:** Next.js (App Router) + React
+* **Linguagem:** TypeScript
+* **Estilização:** Tailwind CSS
+* **Componentes Visuais:** Aceternity UI, Tremor, Framer Motion
+* **Funcionalidades:** Dnd Kit (Kanban), FullCalendar, React Hook Form + Zod, Sonner (Notificações)
+* **Backend & DB:** Firebase Authentication e Cloud Firestore
 
-- Landing page inicial;
-- Menu responsivo;
-- Footer institucional;
-- Call to action;
-- Mockup de demonstração do sistema;
-- Cadastro de usuário com nome, e-mail, senha e confirmação de senha;
-- Validação com React Hook Form e Zod;
-- Login com e-mail e senha;
-- Login com Google;
-- Login com GitHub;
-- Envio de e-mail de verificação;
-- Rota protegida `/dashboard`;
-- Exibição dos dados do usuário autenticado;
-- Logout;
-- Exclusão da conta do usuário autenticado;
-- Feedback visual com Sonner.
+## ⚙️ Pré-requisitos
 
-## Tecnologias utilizadas
+Antes de iniciar, certifique-se de ter instalado em sua máquina:
+* [Node.js](https://nodejs.org/) (Versão 18.x ou superior)
+* [Git](https://git-scm.com/)
+* Uma conta no [Firebase](https://firebase.google.com/) para configurar seu banco de dados.
 
-- Next.js com App Router;
-- React;
-- TypeScript;
-- Tailwind CSS;
-- Firebase Authentication;
-- Firebase Firestore preparado para próximas etapas;
-- React Hook Form;
-- Zod;
-- Sonner;
-- Lucide React;
-- Next Themes.
+## 📦 Guia de Instalação e Execução
 
-## Configuração do Firebase
+Siga o passo a passo abaixo para rodar o projeto localmente:
 
-Crie um projeto no Firebase e ative os provedores de autenticação:
+**1. Clone o repositório:**
+bash
+git clone [https://github.com/leticiafossa-blip/taskflow_Levar.git](https://github.com/leticiafossa-blip/taskflow_Levar.git)
+cd taskflow_Levar
 
-- Email/senha;
-- Google;
-- GitHub.
-
-Depois crie um arquivo `.env.local` na raiz do projeto com as variáveis do Firebase. Use o arquivo `.env.local.example` como modelo.
-
-## Como executar localmente
-
-```bash
+2. Instale as dependências:
+Bash
 npm install
+
+3. Configure as Variáveis de Ambiente: Crie um arquivo chamado .env.local na raiz do projeto e adicione as suas chaves do Firebase:
+Snippet de código
+NEXT_PUBLIC_FIREBASE_API_KEY="SUA_API_KEY"
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN="SEU_DOMAIN"
+NEXT_PUBLIC_FIREBASE_PROJECT_ID="SEU_PROJECT_ID"
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET="SEU_STORAGE_BUCKET"
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID="SEU_SENDER_ID"
+NEXT_PUBLIC_FIREBASE_APP_ID="SEU_APP_ID"
+
+(Importante: Você também precisa habilitar os provedores de Email/Senha, Google e GitHub no painel de Authentication do seu projeto Firebase, além de criar uma base de dados no Firestore em modo teste/produção).
+4. Execute a aplicação em ambiente de desenvolvimento:
+Bash
 npm run dev
-```
 
-Acesse `http://localhost:3000`.
-
-## Rotas principais
-
-```txt
-/            Landing page
-/login       Login
-/register    Cadastro
-/dashboard   Área protegida
-```
-
-## Observação sobre exclusão de conta
-
-A exclusão da conta utiliza o método `deleteUser` do Firebase Authentication. Por segurança, o Firebase pode exigir login recente para excluir uma conta. Caso isso aconteça, o sistema exibirá uma mensagem orientando o usuário a sair e entrar novamente antes de tentar excluir.
+5. Acesse o sistema: Abra o seu navegador e acesse http://localhost:3000
+👥 Desenvolvedores
+Mateus Juil Vargas
+Letícia Barcellos
