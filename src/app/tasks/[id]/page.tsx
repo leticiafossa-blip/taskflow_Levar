@@ -8,6 +8,7 @@ import { taskService } from "@/services/task.service";
 import { Task } from "@/types/task";
 import Link from "next/link";
 import { ArrowLeft, CheckCircle2, Circle, Calendar, Flag } from "lucide-react";
+import { toast } from "sonner"; // Importação do Sonner adicionada
 
 export default function TaskDetailsPage() {
   const { id } = useParams();
@@ -17,6 +18,7 @@ export default function TaskDetailsPage() {
   const [task, setTask] = useState<Task | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [newComment, setNewComment] = useState(""); // Novo estado para o comentário
 
   useEffect(() => {
     async function fetchTask() {
@@ -58,6 +60,29 @@ export default function TaskDetailsPage() {
       console.error("Erro ao atualizar status:", error);
     } finally {
       setSaving(false);
+    }
+  };
+
+  // Função para adicionar um novo comentário/log
+  const handleAddComment = async () => {
+    if (!newComment.trim() || !task || !task.id) return;
+    
+    const comment = { 
+      id: Date.now().toString(), 
+      text: newComment, 
+      createdAt: new Date().toLocaleString('pt-BR') 
+    };
+    
+    const updatedComments = [...(task.comments || []), comment];
+    setTask({ ...task, comments: updatedComments });
+    setNewComment("");
+
+    try {
+      await taskService.updateTask(task.id, { comments: updatedComments });
+      toast.success("Log adicionado com sucesso!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Erro ao salvar o log.");
     }
   };
 
@@ -151,6 +176,43 @@ export default function TaskDetailsPage() {
               </div>
             )}
           </div>
+
+          {/* NOVA SEÇÃO: Log de Trabalho / Comentários */}
+          <div className="p-8 border-t border-gray-100 dark:border-slate-800 bg-gray-50/30 dark:bg-slate-900/30">
+            <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-4">Log de Trabalho / Comentários</h2>
+            
+            <div className="flex flex-col sm:flex-row gap-3 mb-6">
+              <input 
+                type="text" 
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleAddComment()}
+                placeholder="Registre uma atualização na tarefa..." 
+                className="flex-1 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button 
+                onClick={handleAddComment}
+                disabled={!newComment.trim()}
+                className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 dark:disabled:bg-blue-800 text-white px-6 py-3 rounded-xl font-medium transition-colors"
+              >
+                Adicionar
+              </button>
+            </div>
+
+            <div className="space-y-3">
+              {!task?.comments || task.comments.length === 0 ? (
+                <p className="text-gray-500 dark:text-slate-500 italic text-sm">Nenhum registro encontrado. Seja o primeiro a adicionar um log!</p>
+              ) : (
+                task.comments.map(c => (
+                  <div key={c.id} className="p-4 bg-white dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm">
+                    <p className="text-xs text-gray-500 dark:text-slate-400 mb-1">📅 {c.createdAt}</p>
+                    <p className="text-gray-800 dark:text-slate-200 text-sm font-medium">{c.text}</p>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+
         </div>
       </div>
     </ProtectedRoute>

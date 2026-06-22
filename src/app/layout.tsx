@@ -7,6 +7,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import VLibras from "@/components/VLibras";
 
+
 export const metadata: Metadata = { title: "TaskFlow", description: "Sistema de gerenciamento de tarefas com autenticação Firebase" };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

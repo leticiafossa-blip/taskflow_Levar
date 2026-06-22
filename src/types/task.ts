@@ -15,4 +15,5 @@ export interface Task {
   subtasks?: SubTask[];
   createdAt?: Date | any;
   updatedAt?: string | Date;
+  comments?: { id: string; text: string; createdAt: string }[];
 }

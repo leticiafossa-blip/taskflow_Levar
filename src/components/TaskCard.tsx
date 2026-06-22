@@ -23,6 +23,8 @@ export default function TaskCard({ task, onEdit, onDelete }: TaskCardProps) {
   };
   const priorityClass = task.priority ? priorityColors[task.priority] : priorityColors["média"];
 
+
+  
   return (
     <div className="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-slate-700 hover:shadow-md hover:border-blue-300 dark:hover:border-blue-500 transition-all flex flex-col justify-between h-full group">
       <div>
