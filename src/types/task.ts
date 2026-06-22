@@ -14,4 +14,5 @@ export interface Task {
   priority?: 'baixa' | 'média' | 'alta';
   subtasks?: SubTask[];
   createdAt?: Date | any;
+  updatedAt?: string | Date;
 }
