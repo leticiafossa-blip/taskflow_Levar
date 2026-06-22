@@ -10,19 +10,6 @@ export default function LandingPage() {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 font-sans selection:bg-blue-500/30">
       
       {/* 1. Menu Responsivo */}
-      <header className="fixed top-0 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 z-50">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="font-bold text-2xl tracking-tighter text-blue-600 dark:text-blue-500">
-            TaskFlow.
-          </div>
-          <nav className="flex items-center gap-4">
-            <Link href="/login" className="text-sm font-medium hover:text-blue-600 transition-colors">Entrar</Link>
-            <Link href="/register" className="bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-              Criar Conta grátis
-            </Link>
-          </nav>
-        </div>
-      </header>
 
       {/* 2. Tela de Apresentação com Aceternity UI */}
       <main className="pt-32 pb-16 px-6 max-w-7xl mx-auto text-center flex flex-col items-center">

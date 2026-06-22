@@ -100,8 +100,8 @@ export default function TaskDetailsPage() {
     <ProtectedRoute>
       <div className="max-w-4xl mx-auto p-6 min-h-[calc(100vh-160px)]">
         <div className="mb-6">
-          <Link href="/dashboard" className="inline-flex items-center gap-2 text-gray-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium">
-            <ArrowLeft size={20} /> Voltar ao Dashboard
+          <Link href="/tasks" className="inline-flex items-center gap-2 text-gray-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium">
+            <ArrowLeft size={20} /> Voltar para Minhas Tarefas
           </Link>
         </div>
 

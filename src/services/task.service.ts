@@ -18,12 +18,16 @@ const COLLECTION_NAME = 'tasks';
 
 export const taskService = {
   // Criar tarefa
-  async createTask(taskData: Omit<Task, 'id' | 'createdAt'>) {
-    const docRef = await addDoc(collection(db, COLLECTION_NAME), {
+  async createTask(taskData: any) {
+    // Força a data de criação no momento exato em que vai pro banco
+    const dataToSave = {
       ...taskData,
-      createdAt: Timestamp.now(),
-    });
-    return docRef.id;
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    const docRef = await addDoc(collection(db, "tasks"), dataToSave);
+    return { id: docRef.id, ...dataToSave };
   },
 
   // Ler tarefas de um utilizador específico
@@ -37,12 +41,16 @@ export const taskService = {
   },
 
   // Atualizar tarefa
-  async updateTask(id: string, taskData: Partial<Task>) {
-    const docRef = doc(db, COLLECTION_NAME, id);
-    await updateDoc(docRef, {
-      ...taskData,
-      updatedAt: Timestamp.now()
-    });
+  async updateTask(id: string, updates: any) {
+    const taskRef = doc(db, "tasks", id);
+    
+    // Força a atualização da data de modificação
+    const dataToUpdate = {
+      ...updates,
+      updatedAt: new Date().toISOString()
+    };
+
+    await updateDoc(taskRef, dataToUpdate);
   },
 
   // Eliminar tarefa
