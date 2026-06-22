@@ -1,104 +1,89 @@
+"use client";
+
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, LayoutDashboard, LockKeyhole, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { LayoutDashboard, CheckCircle, Calendar } from "lucide-react";
+import { TextGenerateEffect } from "@/components/TextGenerateEffect";
 
-const features = [
-  "Login com e-mail e senha",
-  "Login social com Google e GitHub",
-  "Proteção de rotas autenticadas",
-  "Exclusão de conta do usuário",
-];
-
-export default function HomePage() {
+export default function LandingPage() {
   return (
-    // Adicionado dark:from-slate-950 dark:via-slate-900 dark:to-slate-950
-    <section className="min-h-[calc(100vh-160px)] transition-colors duration-300 bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-      <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 lg:grid-cols-2 lg:items-center">
-        <div>
-          <span className="inline-flex items-center gap-2 rounded-full bg-blue-100 dark:bg-blue-900/30 px-4 py-2 text-sm font-semibold text-blue-700 dark:text-blue-400">
-            <Sparkles size={16} />
-            Sistema de gestão de tarefas
-          </span>
-
-          {/* Adicionado dark:text-white */}
-          <h1 className="mt-6 text-4xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-5xl transition-colors">
-            TaskFlow: organize suas tarefas com segurança e praticidade.
-          </h1>
-
-          {/* Adicionado dark:text-slate-300 */}
-          <p className="mt-5 max-w-xl text-lg leading-8 text-slate-600 dark:text-slate-300 transition-colors">
-            Plataforma criada com Next.js, Tailwind CSS e Firebase Authentication
-            para gerenciamento seguro de acesso de usuários e organização de tarefas.
-          </p>
-
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Link
-              href="/register"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700"
-            >
-              Criar conta
-              <ArrowRight size={18} />
-            </Link>
-
-            {/* Adicionado dark:bg-slate-800 dark:text-white dark:border-slate-700 dark:hover:bg-slate-700 */}
-            <Link
-              href="/login"
-              className="inline-flex items-center justify-center rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-5 py-3 font-semibold text-slate-800 dark:text-white transition hover:bg-slate-50 dark:hover:bg-slate-700"
-            >
-              Entrar
-            </Link>
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 font-sans selection:bg-blue-500/30">
+      
+      {/* 1. Menu Responsivo */}
+      <header className="fixed top-0 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 z-50">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+          <div className="font-bold text-2xl tracking-tighter text-blue-600 dark:text-blue-500">
+            TaskFlow.
           </div>
+          <nav className="flex items-center gap-4">
+            <Link href="/login" className="text-sm font-medium hover:text-blue-600 transition-colors">Entrar</Link>
+            <Link href="/register" className="bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+              Criar Conta grátis
+            </Link>
+          </nav>
+        </div>
+      </header>
 
-          <ul className="mt-8 grid gap-3 text-slate-700 dark:text-slate-300 sm:grid-cols-2">
-            {features.map((feature) => (
-              <li key={feature} className="flex items-center gap-2">
-                <CheckCircle2 className="text-blue-600 dark:text-blue-500" size={18} />
-                {feature}
-              </li>
-            ))}
-          </ul>
+      {/* 2. Tela de Apresentação com Aceternity UI */}
+      <main className="pt-32 pb-16 px-6 max-w-7xl mx-auto text-center flex flex-col items-center">
+        <span className="inline-block py-1 px-3 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-sm font-semibold mb-6">
+          O Gestor de Tarefas Definitivo
+        </span>
+        
+        {/* Componente Aceternity UI Exigido */}
+        <div className="max-w-4xl mx-auto mb-6">
+          <TextGenerateEffect words="Organize sua rotina com inteligência." />
         </div>
 
-        {/* Adicionado dark:bg-slate-900 dark:border-slate-800 */}
-        <div className="rounded-3xl border border-white/70 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-2xl shadow-blue-900/10 transition-colors">
-          <div className="rounded-2xl bg-slate-950 dark:bg-slate-950 p-5 text-white border border-transparent dark:border-slate-800">
-            <div className="mb-6 flex items-center justify-between">
-              <div>
-                <p className="text-sm text-slate-400">Demonstração do sistema</p>
-                <h2 className="text-xl font-bold text-white">Dashboard TaskFlow</h2>
-              </div>
-              <LayoutDashboard className="text-blue-300" />
-            </div>
+        <motion.p 
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1, duration: 1 }}
+          className="text-lg md:text-xl text-slate-600 dark:text-slate-400 mb-10 max-w-2xl mx-auto"
+        >
+          Kanban, calendários e métricas em um só lugar. Assuma o controle dos seus projetos e alcance seus objetivos.
+        </motion.p>
+        
+        {/* 3. Call to Action */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.5, duration: 0.5 }}
+          className="flex flex-col sm:flex-row justify-center gap-4 mb-20"
+        >
+          <Link href="/register" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all hover:scale-105">
+            Começar Agora
+          </Link>
+          <Link href="/login" className="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 px-8 py-4 rounded-xl font-bold text-lg transition-all">
+            Acessar minha conta
+          </Link>
+        </motion.div>
 
-            <div className="grid gap-4 sm:grid-cols-3">
-              <div className="rounded-2xl bg-white/10 p-4">
-                <p className="text-sm text-slate-300">Pendentes</p>
-                <strong className="text-3xl text-white">12</strong>
-              </div>
-              <div className="rounded-2xl bg-white/10 p-4">
-                <p className="text-sm text-slate-300">Concluídas</p>
-                <strong className="text-3xl text-white">08</strong>
-              </div>
-              <div className="rounded-2xl bg-white/10 p-4">
-                <p className="text-sm text-slate-300">Vencidas</p>
-                <strong className="text-3xl text-white">03</strong>
-              </div>
+        {/* 4. Mockup de Demonstração */}
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.2 }}
+          className="w-full max-w-5xl rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xl overflow-hidden"
+        >
+          <div className="h-12 border-b border-slate-100 dark:border-slate-800 flex items-center px-4 gap-2 bg-slate-50 dark:bg-slate-950">
+            <div className="w-3 h-3 rounded-full bg-red-400"></div>
+            <div className="w-3 h-3 rounded-full bg-amber-400"></div>
+            <div className="w-3 h-3 rounded-full bg-green-400"></div>
+          </div>
+          <div className="p-8 grid md:grid-cols-3 gap-6 text-left">
+            <div className="p-6 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700">
+              <LayoutDashboard className="text-blue-500 mb-4" size={32} />
+              <h3 className="font-bold text-lg mb-2">Dashboard Visual</h3>
+              <p className="text-slate-500 dark:text-slate-400 text-sm">Acompanhe métricas, tarefas pendentes e atrasadas em tempo real.</p>
             </div>
-
-            {/* Adicionado dark:bg-slate-800 dark:text-white */}
-            <div className="mt-5 rounded-2xl bg-white dark:bg-slate-800 p-5 text-slate-950 dark:text-white transition-colors">
-              <div className="mb-4 flex items-center gap-2">
-                <LockKeyhole size={18} className="text-blue-600 dark:text-blue-400" />
-                <strong>Área protegida</strong>
-              </div>
-              <div className="space-y-3">
-                <div className="h-3 w-full rounded-full bg-slate-200 dark:bg-slate-700" />
-                <div className="h-3 w-4/5 rounded-full bg-slate-200 dark:bg-slate-700" />
-                <div className="h-3 w-2/3 rounded-full bg-slate-200 dark:bg-slate-700" />
-              </div>
+            <div className="p-6 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700">
+              <CheckCircle className="text-emerald-500 mb-4" size={32} />
+              <h3 className="font-bold text-lg mb-2">Quadro Kanban</h3>
+              <p className="text-slate-500 dark:text-slate-400 text-sm">Arraste e solte tarefas. Mude o status do seu projeto rapidamente.</p>
+            </div>
+            <div className="p-6 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700">
+              <Calendar className="text-amber-500 mb-4" size={32} />
+              <h3 className="font-bold text-lg mb-2">Calendário</h3>
+              <p className="text-slate-500 dark:text-slate-400 text-sm">Visão mensal para não perder nenhum prazo importante.</p>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
+        </motion.div>
+      </main>
+    </div>
   );
 }
